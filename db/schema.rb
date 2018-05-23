@@ -12,16 +12,22 @@
 
 ActiveRecord::Schema.define(version: 20180523084801) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "notes", force: :cascade do |t|
     t.string "title"
     t.text "content"
     t.string "group"
-    t.string "views"
-    t.string "likes"
+    t.string "views", default: "0"
+    t.string "likes", default: "0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
+    t.bigint "user_id"
     t.string "alias_name"
+    t.index ["content"], name: "index_notes_on_content"
+    t.index ["group"], name: "index_notes_on_group"
+    t.index ["title"], name: "index_notes_on_title"
     t.index ["user_id"], name: "index_notes_on_user_id"
   end
 
@@ -32,4 +38,5 @@ ActiveRecord::Schema.define(version: 20180523084801) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "notes", "users"
 end
